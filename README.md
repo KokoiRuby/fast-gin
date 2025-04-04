@@ -1,3 +1,5 @@
+# fast-gin
+
 A scaffolder to initialize a project based on [Gin](https://gin-gonic.com/) web framework.
 
 ## Features
