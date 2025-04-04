@@ -1,0 +1,60 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+/bin/
+/pkg/
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool
+*.out
+coverage.out
+
+# Dependency directories (if not using Go modules)
+vendor/
+Godeps/
+
+# Go workspace file (if using GOPATH, less common with modules)
+go.work
+
+# Common editor and IDE files
+*.idea/
+*.swp
+*.swo
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Logs and temporary files
+*.log
+*.tmp
+tmp/
+temp/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Build artifacts and caches
+/build/
+/dist/
+/out/
+
+# Miscellaneous
+*.prof # Profiling data
+*.pid # Process ID files
+*.env # Environment variable files (if sensitive)
+.env.local
+*.bak # Backup files
+
+# If using Go modules, you might not need to ignore these explicitly,
+# but they can still appear in some workflows
+*.mod.bak
+*.sum.bak
+
+# Misc
+./config/settings-dev.yaml

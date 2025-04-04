@@ -1,0 +1,25 @@
+# https://yaml.org/
+
+# string
+name1: myStr
+name2: 'myStr'
+name3: "myStr"
+
+# number
+age: 18
+
+# bool
+isGender1: true
+isGender2: True
+
+# list
+arr1: [1,2,3]
+arr2:
+  - 1
+  - 2
+  - 3
+
+# dict
+obj2:
+  name: myName
+  age: 12
