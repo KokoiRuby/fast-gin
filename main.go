@@ -2,13 +2,24 @@ package main
 
 import (
 	"fast-gin/core"
+	"fast-gin/flags"
+	"fast-gin/global"
 	"fmt"
 )
 
 func main() {
-	cfg, err := core.LoadConfig("./config/settings-dev.yaml")
+	flags.Run()
+
+	var err error
+	global.Config, err = core.LoadConfig()
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(cfg.DB)
+	fmt.Println(global.Config.DB)
+
+	global.Config.DB.Port = 3307
+	err = core.DumpConfig()
+	if err != nil {
+		panic(err)
+	}
 }

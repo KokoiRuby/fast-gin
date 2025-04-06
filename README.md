@@ -6,11 +6,11 @@ A scaffolder to initialize a project based on [Gin](https://gin-gonic.com/) web 
 
 - **Initialization**: Configuration, Database connection, Redis, Logging, Misc.
 - **Command line**: DB initialization, Data import and export.
-- **Routes**: Static, Grouping.
+- **Routes**: Static, Grouping
 - **Middleware**: Authentication, Rate limit.
-- **JWT**: Login, Logout.
-- **Common**: File upload, Captcha, List query.
-- **Deployment**: Dockerfile, docker-compose.
+- **JWT**: Login, Logout
+- **Common**: File upload, Captcha, List query
+- **Deployment**: Dockerfile, docker-compose
 
 ## Configuration
 
@@ -53,7 +53,7 @@ func main() {
 
 Improvements:
 
-- Use `struct` which provides compile-time checking and avoids runtime assertions over `map`.
+- Use `struct` which provides compile-time type checking and avoids runtime assertions over `map`.
 - Use `os.Open` with a decoder for streaming or larger files, avoiding the need to load everything into memory at once.
 - Encapsulate parsing into a reusable function for better modularity.
 - Handle missing files or fields with defaults.
@@ -117,5 +117,45 @@ func main() {
     fmt.Printf("Config: %+v\n", config)
 }
 ```
+
+Read the configuration file from a command-line flag instead of hardcoding it.
+
+```go
+func LoadConfig() (cfg *config.Config, err error) {  
+    cfg = new(config.Config)  
+    file, err := os.Open(flags.Options.File)
+    ...
+}
+```
+
+😖 If the configuration file is modified, the program needs to be restarted to retrieve the new values.
+
+😕 Is there a way to dynamically modify the configuration without restarting the container?
+
+💡
+
+1. Store configuration directly in memory (small or medium project).
+2. Access via APIs of configuration management system, such as etcd.
+
+```go
+func DumpConfig() error {  
+    byteData, err := yaml.Marshal(global.Config)  
+    if err != nil {  
+       return fmt.Errorf("error when dumping configuration: %w", err)  
+    }  
+    err = os.WriteFile(flags.Options.File, byteData, 0666)  
+    if err != nil {  
+       return fmt.Errorf("error when dumping configuration: %w", err)  
+    }  
+    fmt.Println("Configuration dumped successfully")  
+    return nil  
+}
+```
+
+## Flags
+
+| Option | Type   | Description        | Default                  |
+| ------ | ------ | ------------------ | ------------------------ |
+| `-f`   | string | configuration file | `./config/settings.yaml` |
 
 ## Logging
