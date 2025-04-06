@@ -2,9 +2,10 @@ package core
 
 import (
 	"fast-gin/global"
+	"time"
+
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
-	"time"
 )
 
 func InitGorm() (db *gorm.DB) {
@@ -16,7 +17,7 @@ func InitGorm() (db *gorm.DB) {
 	}
 
 	// Open initialize db session based on dialector
-	database, err := gorm.Open(dialector, &gorm.Config{
+	db, err := gorm.Open(dialector, &gorm.Config{
 		DisableForeignKeyConstraintWhenMigrating: true,
 	})
 	if err != nil {
@@ -24,7 +25,7 @@ func InitGorm() (db *gorm.DB) {
 	}
 
 	// Get DB connection pool
-	sqlDB, err := database.DB()
+	sqlDB, err := db.DB()
 	if err != nil {
 		logrus.Fatalf("Failed to get database connection pool: %s", err)
 		return
@@ -42,5 +43,5 @@ func InitGorm() (db *gorm.DB) {
 	sqlDB.SetConnMaxLifetime(time.Hour)
 
 	logrus.Infof("DB initialized successfully")
-	return
+	return db
 }

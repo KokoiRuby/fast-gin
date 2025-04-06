@@ -4,6 +4,7 @@ import (
 	"fast-gin/global"
 	"flag"
 	"fmt"
+	"os"
 )
 
 type FlagOptions struct {
@@ -21,14 +22,13 @@ func Parse() {
 	flag.Parse()
 }
 
-func Run() (ok bool) {
+func Run() {
 	if Options.DB {
-		fmt.Println("Database migration")
-		return true
+		MigrateDB()
+		os.Exit(0)
 	}
 	if Options.Version {
 		fmt.Println("Version:", global.VERSION)
-		return true
+		os.Exit(0)
 	}
-	return false
 }

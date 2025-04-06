@@ -496,3 +496,36 @@ func main() {
   
 }
 ```
+
+## Database migration
+
+```go
+type Model struct {  
+    ID        uint `gorm:"primaryKey"`  
+    CreatedAt time.Time  
+    UpdatedAt time.Time  
+}
+```
+
+```go
+type UserModel struct {  
+    Model           // Base  
+    Username string `gorm:"size:16" json:"username"`  
+    Nickname string `gorm:"size:32" json:"nickname"`  
+    Password string `gorm:"size:64" json:"password"`  
+    RoleID   int8   `json:"roleID"` // 1: admin, 2: normal  
+  
+    // TODO: Email, Phone, UUID, OpenID...  
+}
+```
+
+```go
+func MigrateDB() {  
+    err := global.DB.AutoMigrate(&models.UserModel{})  
+    if err != nil {  
+       logrus.Errorf("Failed to migrate database: %s", err)  
+       return  
+    }  
+    logrus.Infof("Migrate database successfully")  
+}
+```

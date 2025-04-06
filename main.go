@@ -27,9 +27,8 @@ func main() {
 	// Redis
 	global.Redis = core.InitRedis()
 
-	if flags.Run() {
-		return
-	}
+	// Handle DB migration and version print
+	flags.Run()
 
 	fmt.Println("End of Main")
 }
