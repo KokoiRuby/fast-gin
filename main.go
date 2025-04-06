@@ -4,7 +4,7 @@ import (
 	"fast-gin/core"
 	"fast-gin/flags"
 	"fast-gin/global"
-	"github.com/sirupsen/logrus"
+	"fmt"
 )
 
 func main() {
@@ -12,7 +12,7 @@ func main() {
 	core.InitLogger()
 
 	// Flags
-	flags.Run()
+	flags.Parse()
 
 	// Configuration
 	var err error
@@ -20,8 +20,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	logrus.Infof("DB Configuration: %v", global.Config.DB)
-	logrus.Errorf("Test Configuration error")
 
 	// GORM
 	global.DB = core.InitGorm()
@@ -29,4 +27,9 @@ func main() {
 	// Redis
 	global.Redis = core.InitRedis()
 
+	if flags.Run() {
+		return
+	}
+
+	fmt.Println("End of Main")
 }

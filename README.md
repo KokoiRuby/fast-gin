@@ -154,9 +154,11 @@ func DumpConfig() error {
 
 ## Flags
 
-| Option | Type   | Description        | Default                  |
-| ------ | ------ | ------------------ | ------------------------ |
-| `-f`   | string | configuration file | `./config/settings.yaml` |
+| Option | Type     | Description               | Default                  |
+| ------ | -------- | ------------------------- | ------------------------ |
+| `-f`   | `string` | Configuration file        | `./config/settings.yaml` |
+| `-v`   | `bool`   | Print version information | `false`                  |
+| `-db`  | `bool`   | Database migration        | `false`                  |
 
 ## Logging
 

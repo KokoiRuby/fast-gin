@@ -6,6 +6,8 @@ import (
 	"gorm.io/gorm"
 )
 
+const VERSION = "0.0.1"
+
 var (
 	Config *config.Config
 	DB     *gorm.DB
