@@ -166,6 +166,7 @@ Logging is a very important aspect. It is highly recommended that everyone logs 
 - When the log is printed?
 - Log segmentation: by time, by size?
 - Log level?
+- ⚠ Fatal when error occurs in loading configurations. Do not fatal during runtime.
 
 This also brings up the question of whether backend errors should be returned to the frontend.
 
