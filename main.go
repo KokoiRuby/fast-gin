@@ -4,10 +4,12 @@ import (
 	"fast-gin/core"
 	"fast-gin/flags"
 	"fast-gin/global"
-	"fmt"
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
+	core.InitLogger()
+
 	flags.Run()
 
 	var err error
@@ -15,11 +17,5 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(global.Config.DB)
-
-	global.Config.DB.Port = 3307
-	err = core.DumpConfig()
-	if err != nil {
-		panic(err)
-	}
+	logrus.Infof("Configuration loaded successfully: %v", global.Config.DB)
 }
