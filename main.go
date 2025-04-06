@@ -8,10 +8,13 @@ import (
 )
 
 func main() {
+	// Logging
 	core.InitLogger()
 
+	// Flags
 	flags.Run()
 
+	// Configuration
 	var err error
 	global.Config, err = core.LoadConfig()
 	if err != nil {
@@ -20,5 +23,10 @@ func main() {
 	logrus.Infof("DB Configuration: %v", global.Config.DB)
 	logrus.Errorf("Test Configuration error")
 
+	// GORM
 	global.DB = core.InitGorm()
+
+	// Redis
+	global.Redis = core.InitRedis()
+
 }

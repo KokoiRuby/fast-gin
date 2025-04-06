@@ -447,3 +447,50 @@ func InitGorm() (db *gorm.DB) {
 ```
 
 ## Redis
+
+```bash
+go get github.com/redis/go-redis/v9
+```
+
+```yaml
+redis:  
+    addr: "127.0.0.1:6379"  
+    password: ""  
+    db: 1
+```
+
+```go
+type Redis struct {  
+    Addr     string `yaml:"addr"`  
+    Password string `yaml:"password"`  
+    DB       int    `yaml:"db"`  
+}
+```
+
+```go
+func InitRedis() *redis.Client {  
+    cfg := global.Config  
+    rdb := redis.NewClient(&redis.Options{  
+       Addr:     cfg.Redis.Addr,  
+       Password: cfg.Redis.Password,  
+       DB:       cfg.Redis.DB,  
+    })  
+  
+    _, err := rdb.Ping(context.Background()).Result()  
+    if err != nil {  
+       logrus.Errorf("Failed to connect to redis: %s", err)  
+       return nil  
+    }  
+    logrus.Infof("Connect to redis successfully")  
+    return rdb  
+}
+```
+
+```go
+func main() {  
+    ... 
+    // Redis  
+    global.Redis = core.InitRedis()  
+  
+}
+```
