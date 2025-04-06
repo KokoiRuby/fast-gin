@@ -18,4 +18,5 @@ func main() {
 		panic(err)
 	}
 	logrus.Infof("Configuration loaded successfully: %v", global.Config.DB)
+	logrus.Errorf("Test Configuration error")
 }
