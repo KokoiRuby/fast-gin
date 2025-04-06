@@ -332,3 +332,118 @@ func (hook *MyHook) rotate(date string) error {
     return nil  
 }
 ```
+
+## [GORM](https://gorm.io/docs/connecting_to_the_database.html)
+
+GORM officially supports the databases MySQL, PostgreSQL, SQLite, SQL Server, and TiDB.
+
+This scaffolder supports MySQL, PostgreSQL, SQLite.
+
+```bash
+go get gorm.io/gorm
+go get gorm.io/driver/mysql
+go get gorm.io/driver/postgres
+go get github.com/glebarez/sqlite
+```
+
+⚠ For SQLite in CGO.
+
+```bash
+go get gorm.io/driver/sqlite
+```
+
+```yaml
+db:  
+    mode: mysql # Supports: mysql pgsql sqlite  
+    db_name:  
+    host:   
+    port: 3306  
+    user:  
+    password:
+```
+
+Use simple factory pattern to initialize `gorm.DB` given `mode`.
+
+```go
+type DB struct {  
+    Mode     DBMode `yaml:"mode"` // Supports: mysql pgsql sqlite  
+    DBName   string `yaml:"db_name"`  
+    Host     string `yaml:"host"`  
+    Port     int    `yaml:"port"`  
+    User     string `yaml:"user"`  
+    Password string `yaml:"password"`  
+}  
+  
+func (db DB) GetDSN() gorm.Dialector {  
+    switch db.Mode {  
+    case MYSQL:  
+       dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",  
+          db.User,  
+          db.Password,  
+          db.Host,  
+          db.Port,  
+          db.DBName,  
+       )  
+       return mysql.Open(dsn)  
+    case PG:  
+       dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=Asia/Shanghai",  
+          db.User,  
+          db.Password,  
+          db.Host,  
+          db.Port,  
+          db.DBName,  
+       )  
+       return postgres.Open(dsn)  
+    case SQLITE:  
+       return sqlite.Open(db.DBName)  
+    case "":  
+       logrus.Warnf("Database mode not specified")  
+       return nil  
+    default:  
+       logrus.Fatalf("Database is not supported")  
+       return nil  
+    }  
+}
+```
+
+```go
+func InitGorm() (db *gorm.DB) {  
+    cfg := global.Config.DB  
+  
+    dialector := cfg.GetDSN()  
+    if dialector == nil {  
+       return  
+    }  
+  
+    // Open initialize db session based on dialector  
+    database, err := gorm.Open(dialector, &gorm.Config{  
+       DisableForeignKeyConstraintWhenMigrating: true,  
+    })  
+    if err != nil {  
+       logrus.Fatalf("Failed to connect to database: %v", err)  
+    }  
+  
+    // Get DB connection pool  
+    sqlDB, err := database.DB()  
+    if err != nil {  
+       logrus.Fatalf("Failed to get database connection pool: %s", err)  
+       return  
+    }  
+    err = sqlDB.Ping()  
+    if err != nil {  
+       logrus.Fatalf("Failed to probe database connection pool liveness: %s", err)  
+       return  
+    }  
+  
+    // Configure DB connection pool  
+    // TODO: Add to configuration file  
+    sqlDB.SetMaxIdleConns(10)  
+    sqlDB.SetMaxOpenConns(100)  
+    sqlDB.SetConnMaxLifetime(time.Hour)  
+  
+    logrus.Infof("DB initialized successfully")  
+    return  
+}
+```
+
+## Redis

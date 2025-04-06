@@ -19,4 +19,6 @@ func main() {
 	}
 	logrus.Infof("DB Configuration: %v", global.Config.DB)
 	logrus.Errorf("Test Configuration error")
+
+	global.DB = core.InitGorm()
 }

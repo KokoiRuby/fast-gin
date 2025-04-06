@@ -1,5 +1,7 @@
 db:
-  host: localhost
-  port: 5432
-  user: dev
-  password: dev
+  mode: mysql # Supports: mysql pgsql sqlite
+  db_name: test
+  host: 127.0.0.1
+  port: 3306
+  user: root
+  password: root
