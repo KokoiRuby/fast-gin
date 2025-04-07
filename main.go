@@ -4,6 +4,7 @@ import (
 	"fast-gin/core"
 	"fast-gin/flags"
 	"fast-gin/global"
+	"fast-gin/routers"
 	"fmt"
 )
 
@@ -29,6 +30,9 @@ func main() {
 
 	// Handle DB migration and version print
 	flags.Run()
+
+	// Gin
+	routers.Run()
 
 	fmt.Println("End of Main")
 }

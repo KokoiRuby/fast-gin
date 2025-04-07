@@ -687,3 +687,63 @@ func (User) Remove() {
 ```bash
 go run main.go -res user -op remove
 ```
+
+## Routing
+
+```go
+func Run() {  
+    gin.SetMode(global.Config.Gin.Mode)  
+  
+    r := gin.Default()  
+  
+    // Static route  
+    // curl http://localhost:8080/uploads/test.txt  
+    r.Static("/uploads", "./static/uploads")  
+  
+    // Grouping routes  
+    root := r.Group("api")  
+    UserRouter(root)  
+  
+    // Run Gin server  
+    err := r.Run(global.Config.Gin.Addr())  
+    if err != nil {  
+       logrus.Fatalf("Failed to start Gin server: %v", err)  
+       return  
+    }  
+}
+```
+
+```go
+func UserRouter(g *gin.RouterGroup) {  
+    userAPI := api.Apis.UserAPI  
+  
+    r := g.Group("users").Use()  
+  
+    r.POST("/login", userAPI.LoginView)  
+}
+```
+
+```go
+type APIs struct {  
+    UserAPI user.API  
+}  
+  
+var Apis = new(APIs)
+```
+
+```go
+func (API) LoginView(c *gin.Context) {  
+    c.String(http.StatusOK, "Login successfully")  
+    return  
+}
+```
+
+Verify.
+
+```bash
+curl http://localhost:8080/uploads/test.txt
+```
+
+```bash
+curl -X POST http://localhost:8080/v1/users/login
+```
