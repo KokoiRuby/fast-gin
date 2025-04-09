@@ -58,5 +58,6 @@ Thumbs.db
 
 # Misc
 config/settings-dev.yaml
-./logs/
+logs/
 test.db
+test/

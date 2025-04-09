@@ -15,3 +15,8 @@ gin:
   ip: 127.0.0.1
   port: 8080
   mode: release # debug release test
+
+jwt:
+  expire: 24
+  issuer: fast-gin
+  secret_key: my-secret-key
