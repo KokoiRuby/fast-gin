@@ -1,6 +1,7 @@
 package response
 
 import (
+	"fast-gin/utils/validate"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -40,5 +41,6 @@ func FailWithMsg(c *gin.Context, msg string) {
 }
 
 func FailWithErr(c *gin.Context, err error) {
-	Fail(c, 7, err.Error())
+	msg := validate.ValidateError(err)
+	Fail(c, 7, msg)
 }
