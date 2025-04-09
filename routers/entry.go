@@ -18,6 +18,7 @@ func Run() {
 	// Grouping routes
 	v1 := r.Group("v1")
 	UserRouter(v1)
+	ImageRouter(v1)
 
 	// Run Gin server
 	err := r.Run(global.Config.Gin.Addr())

@@ -61,3 +61,4 @@ config/settings-dev.yaml
 logs/
 test.db
 test/
+uploads/images

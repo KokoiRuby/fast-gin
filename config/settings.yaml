@@ -20,3 +20,8 @@ jwt:
   expire: 24
   issuer: fast-gin
   secret_key: my-secret-key
+
+upload:
+  size: 2 # MB
+  dir: images
+  

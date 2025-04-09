@@ -18,6 +18,29 @@ func BindJsonMiddleware[T any](c *gin.Context) {
 	return
 }
 
+func BindQueryMiddleware[T any](c *gin.Context) {
+	var req T
+	err := c.ShouldBindQuery(&req)
+	if err != nil {
+		response.FailWithErr(c, err)
+		c.Abort()
+		return
+	}
+	c.Set("request", req)
+	return
+}
+func BindUriMiddleware[T any](c *gin.Context) {
+	var req T
+	err := c.ShouldBindUri(&req)
+	if err != nil {
+		response.FailWithErr(c, err)
+		c.Abort()
+		return
+	}
+	c.Set("request", req)
+	return
+}
+
 func GetBind[T any](c *gin.Context) (cr T) {
 	return c.MustGet("request").(T)
 }
