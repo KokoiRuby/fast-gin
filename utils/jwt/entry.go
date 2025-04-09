@@ -9,16 +9,22 @@ import (
 )
 
 // CustomClaims defines the structure of the token's payload
-type CustomClaims struct {
+
+type ClaimMeta struct {
 	UserID int `json:"userID"`
+	RoleID int `json:"roleID"`
+}
+
+type CustomClaims struct {
+	ClaimMeta
 	jwt.RegisteredClaims
 }
 
 // GenerateJWT creates a new JWT token
-func GenerateJWT(userID int) (string, error) {
+func GenerateJWT(meta ClaimMeta) (string, error) {
 	// Define claims
 	claims := CustomClaims{
-		UserID: userID,
+		ClaimMeta: meta,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Duration(global.Config.JWT.Expire) * time.Hour)), // Expires in 24 hours
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
