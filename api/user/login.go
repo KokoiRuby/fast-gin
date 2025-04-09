@@ -1,11 +1,11 @@
 package user
 
 import (
+	"fast-gin/utils/response"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 func (API) LoginView(c *gin.Context) {
-	c.String(http.StatusOK, "Login successfully")
+	response.OKWithMsg(c, "Login successfully")
 	return
 }

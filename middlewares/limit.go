@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"fast-gin/utils/response"
 	"github.com/gin-gonic/gin"
 	"time"
 )
@@ -42,9 +43,7 @@ func (l *Limiter) Middleware(c *gin.Context) {
 	}
 
 	if len(l.timestamps[ip]) >= l.limit {
-		c.JSON(429, gin.H{
-			"message": "Too Many Requests",
-		})
+		response.FailWithMsg(c, "Too many requests")
 		c.Abort()
 		return
 	}
