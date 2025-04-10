@@ -6,4 +6,5 @@ type Config struct {
 	Gin    Gin    `yaml:"gin"`
 	JWT    JWT    `yaml:"jwt"`
 	Upload Upload `yaml:"upload"`
+	Site   Site   `yaml:"site"`
 }

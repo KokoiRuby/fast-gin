@@ -1,4 +1,4 @@
-package jwt
+package jwts
 
 import (
 	"fast-gin/global"
@@ -11,8 +11,8 @@ import (
 // CustomClaims defines the structure of the token's payload
 
 type ClaimMeta struct {
-	UserID int `json:"userID"`
-	RoleID int `json:"roleID"`
+	UserID uint `json:"userID"`
+	RoleID int8 `json:"roleID"`
 }
 
 type CustomClaims struct {

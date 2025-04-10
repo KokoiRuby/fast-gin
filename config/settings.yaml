@@ -24,4 +24,8 @@ jwt:
 upload:
   size: 2 # MB
   dir: images
+
+site:
+  login:
+    captcha: true
   
