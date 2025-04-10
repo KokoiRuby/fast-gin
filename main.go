@@ -5,6 +5,7 @@ import (
 	"fast-gin/flags"
 	"fast-gin/global"
 	"fast-gin/routers"
+	"fast-gin/service/svc_cron"
 	"fmt"
 )
 
@@ -30,6 +31,9 @@ func main() {
 
 	// Handle DB migration and version print
 	flags.Run()
+
+	// Cron (goroutine)
+	svc_cron.CronInit()
 
 	// Gin
 	routers.Run()
