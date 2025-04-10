@@ -19,7 +19,7 @@ var whiteList = map[string]struct{}{
 	".gif": {},
 }
 
-func (API) Upload(c *gin.Context) {
+func (API) UploadView(c *gin.Context) {
 	fileHeader, err := c.FormFile("file")
 	if err != nil {
 		response.FailWithMsg(c, "Please select an image")

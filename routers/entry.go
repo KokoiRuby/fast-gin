@@ -17,6 +17,11 @@ func Run() {
 
 	// Grouping routes
 	v1 := r.Group("v1")
+
+	// Probes
+	ProbeRouter(v1)
+
+	// Biz
 	UserRouter(v1)
 	ImageRouter(v1)
 	CaptchaRouter(v1)
