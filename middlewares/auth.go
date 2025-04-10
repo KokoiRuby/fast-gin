@@ -1,10 +1,10 @@
 package middlewares
 
 import (
+	"fast-gin/service/svc_redis"
 	"fast-gin/utils/jwts"
 	"fast-gin/utils/response"
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v5"
 )
 
 func AuthMiddleware(c *gin.Context) {
@@ -15,14 +15,25 @@ func AuthMiddleware(c *gin.Context) {
 		c.Abort()
 		return
 	}
+	if svc_redis.HasLoggedOut(token) {
+		response.FailWithMsg(c, "User has logged out")
+		c.Abort()
+		return
+	}
 	c.Next()
 }
 
-func AuthMiddlewareWithRole(c *gin.Context) {
+func AdminAuthMiddleware(c *gin.Context) {
 	token := c.GetHeader("token")
+
 	claims, err := jwts.ValidateJWT(token)
 	if err != nil {
 		response.FailWithMsg(c, "Authentication failed")
+		c.Abort()
+		return
+	}
+	if svc_redis.HasLoggedOut(token) {
+		response.FailWithMsg(c, "User has logged out")
 		c.Abort()
 		return
 	}
@@ -37,15 +48,15 @@ func AuthMiddlewareWithRole(c *gin.Context) {
 	c.Next()
 }
 
-func GetClaimsFrom(c *gin.Context) (claims *jwt.Claims) {
-	claims = new(jwt.Claims)
+func GetClaimsFrom(c *gin.Context) (claims *jwts.CustomClaims) {
+	claims = new(jwts.CustomClaims)
 
 	_claims, ok := c.Get("claims")
 	if !ok {
 		return
 	}
 
-	claims, ok = _claims.(*jwt.Claims)
+	claims, ok = _claims.(*jwts.CustomClaims)
 	if !ok {
 		return
 	}

@@ -10,8 +10,8 @@ func ImageRouter(g *gin.RouterGroup) {
 	imageAPI := api.Apis.ImageAPI
 
 	r := g.Group("images").Use(
-		middlewares.AuthMiddlewareWithRole,
+		middlewares.AdminAuthMiddleware,
 	)
-	
-	r.POST("/upload", imageAPI.Upload)
+
+	r.POST("upload", imageAPI.Upload)
 }

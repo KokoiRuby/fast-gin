@@ -10,8 +10,8 @@ func CaptchaRouter(g *gin.RouterGroup) {
 	captchaAPI := api.Apis.CaptchaAPI
 
 	r := g.Group("captcha").Use(
-		middlewares.AuthMiddlewareWithRole,
+		middlewares.AdminAuthMiddleware,
 	)
 
-	r.GET("/generate", captchaAPI.GenerateCaptcha)
+	r.GET("generate", captchaAPI.GenerateCaptcha)
 }

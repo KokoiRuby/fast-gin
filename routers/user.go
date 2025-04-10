@@ -12,10 +12,11 @@ func UserRouter(g *gin.RouterGroup) {
 
 	r := g.Group("users").Use(
 		middlewares.LimitMiddleware(1),
-		middlewares.BindJsonMiddleware[user.LoginRequest],
-		middlewares.AuthMiddlewareWithRole,
+		middlewares.AdminAuthMiddleware,
 	)
 
-	r.POST("/login", userAPI.LoginView)
-	r.GET("/list", userAPI.ListView)
+	r.POST("login", middlewares.BindJsonMiddleware[user.LoginRequest], userAPI.LoginView)
+	r.POST("logout", userAPI.LogoutView)
+
+	r.GET("list", userAPI.ListView)
 }
