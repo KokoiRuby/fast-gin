@@ -28,6 +28,13 @@ func OKWithMsg(c *gin.Context, msg string) {
 	OK(c, gin.H{}, msg)
 }
 
+func OKWithList(c *gin.Context, list any, count int64) {
+	OK(c, map[string]any{
+		"count": count,
+		"list":  list,
+	}, "Success")
+}
+
 func Fail(c *gin.Context, code int, msg string) {
 	c.JSON(http.StatusOK, Response{
 		Code: code,

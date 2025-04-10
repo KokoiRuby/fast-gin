@@ -4,6 +4,7 @@ import (
 	"fast-gin/api"
 	"fast-gin/api/user"
 	"fast-gin/middlewares"
+	"fast-gin/models"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,5 +19,5 @@ func UserRouter(g *gin.RouterGroup) {
 	r.POST("login", middlewares.BindJsonMiddleware[user.LoginRequest], userAPI.LoginView)
 	r.POST("logout", userAPI.LogoutView)
 
-	r.GET("list", userAPI.ListView)
+	r.GET("list", middlewares.BindQueryMiddleware[models.PageInfo], userAPI.ListView)
 }
